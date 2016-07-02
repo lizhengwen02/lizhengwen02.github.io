@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="description"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Zhengwen Li</title><link rel="short icon" href="/favicon.ico"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/fonts/iconfont/iconfont.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Roboto Mono"><!-- baidu analytics--><script type="text/javascript">var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9e0cbea7d3319c6c94c71dfb93c151b8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><!-- google analytics--><script type="text/javascript">(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-74273646-1', 'auto');
+ga('send', 'pageview');</script></head><body><div id="main"><header><a href="/." class="logo">Zhengwen Li</a><ul class="nav"><li class="nav-link"><a href="/" target="_self">首页</a></li><li class="nav-link"><a href="/archives/" target="_self">归档</a></li><li class="nav-link"><a href="/tags/" target="_self">标签</a></li><li class="nav-link"><a href="/about/" target="_self">关于</a></li></ul></header><section id="container"><article class="post"><h1 class="post-title">Cross Entropy Error</h1><span class="post-time">2016年7月2日</span><div class="post-content"><p>在机器学习里，loss function是很重要的一部分，它用来衡量我们对问题策略的优劣。通常来讲，loss function最小的模型，就是在当前模型空间(hypothesis)里，最合适的模型。<br>Cross Entropy Error是loss function的一种形式。对于一个二分类问题，假设model为$\hat{y} = \sigma(x) = \frac{1}{1 + e^{-wx}}$，那么entroy error就是$$L = \frac{1}{N}\sum_i{\hat{y_i}log\hat{y_i} + (1 - \hat{y_i})log(1 - \hat{y_i})}$$如果我们使用square error最为loss function，那么上述问题的loss function就是$$L = \frac{1}{N}\sum_i{(y_i - \hat{y_i})}$$二者是最为常用的loss function形式，一般来讲，在使用gradient descent算法作为最优化算法去逼近最小loss function的时候，使用cross entropy error，求解的速度会更快，这个通过简单的分部求导就可以看出来。cross entropy error更符合人们的认知，也就是people will learn very fast when they are wrong。</p>
+</div></article><div class="tags"><a href="/tag/机器学习/">机器学习</a></div><div class="paginator"><a href="/2016/06/25/variational-inference/" class="next"><span>下一页</span><i class="fa fa-chevron-right"></i></a></div><section id="comments"><div id="disqus_thread"></div></section><script type="text/javascript">(function() {
+var d = document, s = d.createElement('script');
+
+s.src = '//zwli.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script></section><footer><div class="copyright"><p><span class="heart"><i class="fa fa-heart"></i></span><span class="author">Zhengwen Li</span></p><p class="theme">Theme by <a href="https://github.com/ahonn/hexo-theme-even"> Even</a></p></div><label id="back2top"><i class="fa fa-chevron-up"></i></label><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script></footer></div></body><script src="/js/back2top.js"></script></html>
