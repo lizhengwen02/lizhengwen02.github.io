@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="description"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Zhengwen Li</title><link rel="short icon" href="/favicon.ico"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/fonts/iconfont/iconfont.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Roboto Mono"><!-- baidu analytics--><script type="text/javascript">var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9e0cbea7d3319c6c94c71dfb93c151b8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><!-- google analytics--><script type="text/javascript">(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-74273646-1', 'auto');
+ga('send', 'pageview');</script></head><body><div id="main"><header><a href="/." class="logo">Zhengwen Li</a><ul class="nav"><li class="nav-link"><a href="/" target="_self">首页</a></li><li class="nav-link"><a href="/archives/" target="_self">归档</a></li><li class="nav-link"><a href="/tags/" target="_self">标签</a></li><li class="nav-link"><a href="/about/" target="_self">关于</a></li></ul></header><section id="container"><article class="post"><h1 class="post-title">Importance Sampling</h1><span class="post-time">2016年7月17日</span><div class="post-content"><p>问题定义：假设变量$x$服从分布$p(x)$，$p(x)$未知，并且是不可计算或者很难计算的，但是，对于给定的$x_i$，能够很容易地计算出$p(x_i)$，然后计算函数$f(x)$在分布$p(x)$下的期望，即<br>$$E[f] = \int{f(x)p(x)dx}$$<br>最简单明了的方法是，我们把变量$x$所代表的空间平均划分，然后对这个划分进行uniform sampling，再用这些samples带入上面的公式进行计算，从而得到要求的期望。计算如下<br>$$E[f] = \sum_l^L{f(x_l)p(x_l)}$$<br>这个方法，在低维，并且函数$f(x)$是均匀的情况下，是完全使用的。但是，假如$f(x)$是不均匀的，那么按照上面方法，采样出来的样本，很可能会落入到$f(x)$值比较小的区域，这样，就会使得期望偏小。这种情况，在高维的情况下，会变得更严重，因为可能$f(x)$的高值部分就是那么一小块区间。<br>Importance Sampling在这样的场景下，就会显得很实用。它的本质是提出一个proposal distribution $q(x)$，既然$p(x)$很难采样，那我就用一个和它相似的，并且容易采样的分布来代替它，这个相似的分布就是$q(x)$，我用从$q(x)$采样出来的样本，默认为是从$p(x)$采样出来的样本，来计算期望。计算如下<br>$$<br>\begin{align}<br>E[f] &amp; = \int{f(x)p(x)dx} \\<br>&amp; = \int{f(x)\frac{p(x)}{q(x)}q(x)dx} \\<br>&amp; = \frac{1}{L}\sum_l^L{f(x)\frac{p(x)}{q(x)}}<br>\end{align}<br>$$<br>其中$\frac{p(x)}{q(x)}$被称为importance weights，它用于矫正由于错误的采样而引入的误差。  </p>
+<h4 id="importance_sampling的使用">importance sampling的使用</h4><p>给定一个模型，假设我们知道它的观测结果<em>w</em>，并且知道它有某些隐藏因子<em>h</em>。<em>h</em>决定<em>w</em>，那么$p(w) = \sum_h{p(w,h)}$，或者$p(w) = \int{p(w,h)dh}$，而此时<em>h</em>的分布式未知的，那么我们如何计算$p(w)$呢？<br>使用importance sampling的方法计算如下<br>$$<br>\begin{align}<br>p(w) &amp; = \int{p(w,h)dh} \\<br>&amp; = \int{p(w \mid h)p(h)dh}) \\<br>&amp; = \int{p(w \mid h)\frac{p(h)}{q(h)}q(h)dh} \\<br>&amp; = \frac{1}{L}\sum_l{p(w \mid h)\frac{p(h)}{q(h)}} \\<br>&amp; = \frac{1}{L}\sum_l\frac{p(w,h)}{q(h)}<br>\end{align}<br>$$<br>这样，我们只需要找一个合适的proposal distribution $q(h)$，然后以它做采样，最后来计算期望就可以了。</p>
+</div></article><div class="tags"><a href="/tag/Machine-Learning/">Machine Learning</a></div><div class="paginator"><a href="/2016/07/02/cross-entroy-error/" class="next"><span>下一页</span><i class="fa fa-chevron-right"></i></a></div><section id="comments"><div id="disqus_thread"></div></section><script type="text/javascript">(function() {
+var d = document, s = d.createElement('script');
+
+s.src = '//zwli.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script></section><footer><div class="copyright"><p><span class="heart"><i class="fa fa-heart"></i></span><span class="author">Zhengwen Li</span></p><p class="theme">Theme by <a href="https://github.com/ahonn/hexo-theme-even"> Even</a></p></div><label id="back2top"><i class="fa fa-chevron-up"></i></label><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script></footer></div></body><script src="/js/back2top.js"></script></html>
